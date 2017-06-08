@@ -25,16 +25,21 @@
     statement.setString(1, mobile);
     statement.setString(2, password);
     ResultSet resultSet = statement.executeQuery();
-    if (resultSet.next()) {
+    if (resultSet.next()){
         // success
-        response.sendRedirect("home.jsp"); //
+        request.setAttribute("nick", resultSet.getString("nick"));
+//    response.sendRedirect("home.jsp"); //重定向不能保存request范围内的属性，但转发可以
+        request.getRequestDispatcher("home.jsp").forward(request,response);
     } else {
         // failed
-        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
-//        request.setAttribute("message", "用户名或密码错误");
-//        request.getRequestDispatcher("index.jsp")
-//                .forward(request, response); // forward 转发 地址栏地址没有变化
+//        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
+        request.setAttribute("message", "用户名或密码错误");
+        request.getRequestDispatcher("index.jsp")
+                .forward(request, response); // forward 转发 地址栏地址没有变化
     }
+    connection.close();
+    statement.close();
+    resultSet.close();
 %>
 </body>
 </html>
