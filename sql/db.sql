@@ -10,7 +10,9 @@ CREATE TABLE db_javaee.user (
   mobile   VARCHAR(255) NOT NULL
   COMMENT '手机号',
   password VARCHAR(255) NOT NULL
-  COMMENT '密码'
+  COMMENT '密码',
+  hobbies VARCHAR(255) COMMENT '爱好',
+  cicies VARCHAR(255) COMMENT '城市'
 )
   COMMENT '用户表';
 

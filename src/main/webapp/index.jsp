@@ -11,7 +11,7 @@
     <title>index page</title>
   </head>
   <body>
-  <form action="login.jsp" method="post">
+  <form action="login" method="post">
     <%--无论任何时候。表单提交都使用post方式--%>
     <%--action 就是表单请求提交的位置--%>
       <input type="text" name="mobile" placeholder="手机号"><br>
