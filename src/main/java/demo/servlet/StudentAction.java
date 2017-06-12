@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class StudentAction extends HttpServlet {
         String action = req.getParameter("action");
         if ("add".equals(action)) {
             add(req, resp);
-            return;
+            return;  //  如果没有return，  执行完if语句会执行下面两句语句吗
         }
         req.setAttribute("message", "出了一点问题");
         req.getRequestDispatcher("index.jsp").forward(req, resp);
@@ -36,20 +37,20 @@ public class StudentAction extends HttpServlet {
 
         java.sql.Connection Connection = Db.getConnection();
         PreparedStatement statement = null;
-            String sql = "INSERT INTO db_javaee.student VALUE (NULL ,?,?,?)";
+        String sql = "INSERT INTO db_javaee.student VALUE (NULL ,?,?,?)";
         try {
             if (Connection != null) {
                 statement = Connection.prepareStatement(sql);
             } else {
-                req.setAttribute("message","连接出现问题");
-                req.getRequestDispatcher("home.jsp").forward(req,resp);
+                req.setAttribute("message", "连接出现问题");
+                req.getRequestDispatcher("home.jsp").forward(req, resp);
                 return;
             }
             statement.setString(1, name);
             statement.setString(2, gender);
-            statement.setString(3,date);
-             statement.executeUpdate();
-             resp.sendRedirect("home.jsp");
+            statement.setString(3, date);
+            statement.executeUpdate();
+            resp.sendRedirect("home.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -58,8 +59,32 @@ public class StudentAction extends HttpServlet {
 
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+   protected void queryAll (HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM db_javaee.student ORDER BY id";
+
+       try {
+           if (connection != null) {
+               preparedStatement = connection.prepareStatement(sql);
+           }else {
+               req.setAttribute("message","出现问题");
+               req.getRequestDispatcher("home.jsp").forward(req,resp);
+               return;
+           }
+           resultSet = preparedStatement.executeQuery();
+
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }finally {
+           Db.close(resultSet,preparedStatement,connection);
+       }
+
+
+   }
+        @Override
+        protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            doPost(req, resp);
+        }
     }
-}
