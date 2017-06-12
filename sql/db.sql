@@ -16,5 +16,16 @@ CREATE TABLE db_javaee.user (
 )
   COMMENT '用户表';
 
+DROP TABLE IF EXISTS db_javaee.student;
+CREATE TABLE db_javaee.student(
+  id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID PK',
+  name VARCHAR(255) COMMENT '姓名',
+  gander VARCHAR(255) COMMENT '性别',
+  dob DATE COMMENT '出生日期'
+)COMMENT '学生表';
+
 SELECT *
 FROM db_javaee.user;
+
+SELECT *
+FROM db_javaee.student;

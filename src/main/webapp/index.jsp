@@ -11,9 +11,11 @@
     <title>index page</title>
   </head>
   <body>
-  <form action="login" method="post">
+  <form action="user" method="post">
     <%--无论任何时候。表单提交都使用post方式--%>
     <%--action 就是表单请求提交的位置--%>
+      <input type="hidden" name="action" value="login">
+      <%--hidden  隐藏--%>
       <input type="text" name="mobile" placeholder="手机号"><br>
     <input type="password" name="password" placeholder="密码"><br>
     <input type="submit" value="登录">

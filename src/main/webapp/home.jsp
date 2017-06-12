@@ -17,7 +17,23 @@
 <a href="second.jsp">去往第二页</a>
 <p><a href="logout"></a></p>
 
-<a href="logout.jsp">注销</a>
+<a href="user?action=logout">注销</a>
 <a href="index.jsp">回到登录页面</a>
+<hr>
+<form style="text-align: center" action="student" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="text" name="name" placeholder="姓名" ><br>
+    <input type="text" name="gender" placeholder="性别"><br>
+    <input type="date" name="dob" placeholder="出生日期"><br>
+    <input type="submit" value="添加">
+
+</form>
+<%
+    String message = (String) request.getAttribute("message");
+    if (message != null) {
+        out.print(message);
+    }
+
+%>
 </body>
 </html>

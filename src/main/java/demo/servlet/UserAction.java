@@ -1,7 +1,6 @@
 package demo.servlet;
 
 import demo.util.Db;
-import sun.rmi.transport.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,12 +14,62 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
- * Created by lichengjun on 2017/6/9.
+ * Created by lichengjun on 2017/6/12.
  */
-@WebServlet(urlPatterns = "/register") // 类级别的注解
-public class RegisterServlet extends HttpServlet{
+@WebServlet(urlPatterns = "/user")
+public class UserAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action.equals("login")) {
+            login(req, resp);
+        }
+        if (action.equals("register")) {
+            register(req,resp);
+        }
+        if (action.equals("logout")) {
+            logout(req,resp);
+        }
+
+    }
+
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String mobile = req.getParameter("mobile");
+        String password = req.getParameter("password");
+
+        java.sql.Connection Connection = Db.getConnection();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+
+            String sql = "SELECT * FROM db_javaee.user WHERE mobile = ? AND password = ?";
+            if (Connection != null) {
+                statement = Connection.prepareStatement(sql);
+            } else {
+                return;
+            }
+            statement.setString(1,mobile);
+            statement.setString(2,password);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                req.getSession().setAttribute("nick",resultSet.getString("nick"));
+                resp.sendRedirect("home.jsp");
+//                req.getRequestDispatcher("home.jsp").forward(req,resp);
+            }else {
+                req.setAttribute("message","用户名或密码错误");
+//                req.getRequestDispatcher("index.jsp").forward(req,resp);
+                resp.sendRedirect("index.jsp");
+                // req.getRequestDispatcher("index.jsp").forward(req,resp);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            Db.close(resultSet, statement,Connection);
+        }
+    }
+
+    private void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String nick = req.getParameter("nick").trim();
         String mobile = req.getParameter("mobile").trim();
         String password = req.getParameter("password");
@@ -82,5 +131,16 @@ public class RegisterServlet extends HttpServlet{
             Db.close(resultSet,statement,connection);
         }
     }
-}
 
+    private void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            req.getSession().invalidate();
+            resp.sendRedirect("index.jsp");
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);// ??
+
+    }
+}
