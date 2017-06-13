@@ -96,7 +96,6 @@ public class StudentAction extends HttpServlet {
             resultSet = preparedStatement.executeQuery();// 先把resultset 的值取出来，放到集合里
             List<Student> students = new ArrayList<>();
             while (resultSet.next()){
-
             Student student = new Student(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
