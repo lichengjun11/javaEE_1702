@@ -55,7 +55,7 @@
     PreparedStatement.setString(3,password);
     PreparedStatement.executeUpdate();
 
-    response.sendRedirect("index.jsp");
+    response.sendRedirect("default.jsp");
 
     }
 

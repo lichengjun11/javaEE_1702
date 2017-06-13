@@ -28,13 +28,13 @@
     if (resultSet.next()){
         // success
         request.setAttribute("nick", resultSet.getString("nick"));
-//    response.sendRedirect("home.jsp"); //重定向不能保存request范围内的属性，但转发可以
-        request.getRequestDispatcher("home.jsp").forward(request,response);
+//    response.sendRedirect("index.jsp"); //重定向不能保存request范围内的属性，但转发可以
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     } else {
         // failed
-//        response.sendRedirect("index.jsp"); // redirect 重定向 地址栏地址有变化
+//        response.sendRedirect("default.jsp"); // redirect 重定向 地址栏地址有变化
         request.setAttribute("message", "用户名或密码错误");
-        request.getRequestDispatcher("index.jsp")
+        request.getRequestDispatcher("default.jsp")
                 .forward(request, response); // forward 转发 地址栏地址没有变化
     }
     connection.close();

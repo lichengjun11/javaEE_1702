@@ -12,6 +12,6 @@
 </head>
 <body>
 <h1>第二页</h1>
-<a href="home.jsp">回到主页</a>
+<a href="index.jsp">回到主页</a>
 </body>
 </html>

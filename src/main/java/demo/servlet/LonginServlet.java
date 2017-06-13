@@ -41,12 +41,12 @@ public class LonginServlet extends HttpServlet{
         resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 req.getSession().setAttribute("nick",resultSet.getString("nick"));
-                resp.sendRedirect("home.jsp");
-//                req.getRequestDispatcher("home.jsp").forward(req,resp);
-            }else {
-                req.getSession().setAttribute("message","用户名或密码错误");
                 resp.sendRedirect("index.jsp");
 //                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            }else {
+                req.getSession().setAttribute("message","用户名或密码错误");
+                resp.sendRedirect("default.jsp");
+//                req.getRequestDispatcher("default.jsp").forward(req,resp);
             }
     }
     catch (SQLException e){

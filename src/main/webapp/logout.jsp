@@ -14,7 +14,7 @@
 <%
     session.invalidate();
 //    使session 失效，网页注销的方式
-    response.sendRedirect("index.jsp");
+    response.sendRedirect("default.jsp");
 %>
 </body>
 </html>
