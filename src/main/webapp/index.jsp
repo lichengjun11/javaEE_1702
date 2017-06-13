@@ -34,7 +34,7 @@
     <input type="text" name="gender" placeholder="性别"><br>
     <input type="date" name="dob" placeholder="出生日期"><br>
     <input type="submit" value="添加">
-
+    <a href=""></a>
 </form>
 <hr>
 <table border="1">
@@ -43,11 +43,13 @@
         <th>姓名</th>
         <th>性别</th>
         <th>出生日期</th>
+        <th colspan="2">操作</th>
+        <%--colspan="2"  跨列--%>
     </tr>
 <%
     List<Student> resultSet = (List<Student>)session.getAttribute("students");
     for (Student student : resultSet) {
-        out.print("<tr>" + "<td>"+student.getId()+"</td>" + "<td>"+student.getName()+"</td>" +"<td>"+student.getGender()+"</td>" +"<td>"+student.getDob()+"</td>" +"</tr>");
+        out.print("<tr>" + "<td>"+student.getId()+"</td>" + "<td>"+student.getName()+"</td>" +"<td>"+student.getGender()+"</td>" +"<td>"+student.getDob()+"</td>" + "<td><a href='student?action=queryById&id="+student.getId()+"'>编辑</a></td>"+"<td><a href='student?action=remove&id="+student.getId()+"'>删除</a></td>"+"</tr>");
     }
     %>
 </table>

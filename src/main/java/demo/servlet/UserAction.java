@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 /**
  * Created by lichengjun on 2017/6/12.
@@ -41,14 +41,14 @@ public class UserAction extends HttpServlet {
         String mobile = req.getParameter("mobile");
         String password = req.getParameter("password");
 
-        java.sql.Connection Connection = Db.getConnection();
+        Connection connection = Db.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
 
             String sql = "SELECT * FROM db_javaee.user WHERE mobile = ? AND password = ?";
-            if (Connection != null) {
-                statement = Connection.prepareStatement(sql);
+            if (connection != null) {
+                statement = connection.prepareStatement(sql);
             } else {
                 return;
             }
@@ -69,7 +69,7 @@ public class UserAction extends HttpServlet {
         catch (SQLException e){
             e.printStackTrace();
         }finally {
-            Db.close(resultSet, statement,Connection);
+            Db.close(resultSet, statement,connection);
         }
     }
 
