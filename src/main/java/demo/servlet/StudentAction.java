@@ -111,7 +111,7 @@ public class StudentAction extends HttpServlet {
             Db.close(resultSet, preparedStatement, connection);
         }  //     resultset  一旦被关闭，里面内容就都没有了
     }
-
+//    编辑分两步操作，先根据ID 查询当前一条的所有数据，然后再update
     private void queryById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         Connection connection = Db.getConnection();

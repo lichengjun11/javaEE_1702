@@ -21,12 +21,13 @@
     <input type="submit" value="注册">
 
 </form>
-<%
-    String message = (String) request.getAttribute("message");
-    if (message != null) {
-        out.print(message);
-    }
-%>
+<%--<%--%>
+    <%--String message = (String) request.getAttribute("message");--%>
+    <%--if (message != null) {--%>
+        <%--out.print(message);--%>
+    <%--}--%>
+<%--%>--%>
 
+${requestScope.message}
 </body>
 </html>
