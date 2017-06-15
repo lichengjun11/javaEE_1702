@@ -46,8 +46,12 @@ public class StudentAction extends HttpServlet {
             remove(req, resp);
             return;
         }
-        req.setAttribute("message", "出了一点问题");
-        req.getRequestDispatcher("default.jsp").forward(req, resp);
+        if ("batchRemove".equals(action)) {
+            batchRemove(req, resp);
+            return;
+        }
+        req.setAttribute("message", "连接出现问题");
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -175,8 +179,7 @@ public class StudentAction extends HttpServlet {
         }
     }
 
-    protected void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
+    private void removeById(int id){
         Connection connection = Db.getConnection();
         PreparedStatement preparedStatement = null;
         String sql = "DELETE FROM db_javaee.student WHERE id = ?";
@@ -184,15 +187,44 @@ public class StudentAction extends HttpServlet {
             if (connection != null) {
                 preparedStatement = connection.prepareStatement(sql);
             }
-            preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
-            resp.sendRedirect("student?action=queryAll");
+            if (preparedStatement != null) {
+                preparedStatement.setInt(1,id);
+            }
+            if (preparedStatement != null) {
+                preparedStatement.executeUpdate();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            Db.close(null,preparedStatement,connection);
         }
     }
-        @Override
+
+    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+            removeById(id);
+            resp.sendRedirect("student?action=queryAll");
+    }
+
+    private void batchRemove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] ids = req.getParameterValues("ids");
+        for (String idString : ids) {
+            int id = Integer.parseInt(idString);
+        removeById(id);
+        }
+        resp.sendRedirect("student?action=queryAll");
+    }
+    private boolean isConnected(Connection connection,HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        if (connection == null) {
+            req.setAttribute("message", "出现问题");
+            req.getRequestDispatcher("default.jsp").forward(req, resp);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
     }

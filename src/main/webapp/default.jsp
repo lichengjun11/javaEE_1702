@@ -22,12 +22,15 @@
   </form>
   <a href="signup.jsp">注册</a>
   <p>
-  <%
-    String message = (String) request.getAttribute("message");
-    if(message != null){
-        out.print(message);
-    }
-  %>
+  <%--<%--%>
+    <%--String message = (String) request.getAttribute("message");--%>
+    <%--if(message != null){--%>
+        <%--out.print(message);--%>
+    <%--}--%>
+  <%--%>--%>
+
+    ${requestScope.message}
+
   </p>
   </body>
 </html>

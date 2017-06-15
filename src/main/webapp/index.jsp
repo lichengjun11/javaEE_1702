@@ -26,7 +26,7 @@
 <a href="second.jsp">去往第二页</a>
 <p><a href="logout"></a></p>
 
-if后面的test是必选项
+<%--if后面的test是必选项--%>
 <c:if test="${sessionScope.nick eq null}">
     <c:redirect url="default.jsp"/>
 </c:if>
@@ -46,6 +46,8 @@ if后面的test是必选项
 </form>
 <hr>
 
+    <form action="student" method="post">
+        <input type="hidden" name="action" value="batchRemove">
 <table border="1">
     <c:choose>
         <c:when test="${sessionScope.students[0] eq null}">当前没有记录</c:when>
@@ -63,12 +65,12 @@ if后面的test是必选项
     </tr>
         </c:otherwise>
     </c:choose>
-    <%
-    List<Student> resultSet = (List<Student>)session.getAttribute("students");
-    for (Student student : resultSet) {
-    out.print("<tr>" + "<td>"+student.getId()+"</td>" + "<td>"+student.getName()+"</td>" +"<td>"+student.getGender()+"</td>" +"<td>"+student.getDob()+"</td>" + "<td><a href='student?action=queryById&id="+student.getId()+"'>编辑</a></td>"+"<td><a href='student?action=remove&id="+student.getId()+"'>删除</a></td>"+"</tr>");
-    }
-    %>
+    <%--<%--%>
+    <%--List<Student> resultSet = (List<Student>)session.getAttribute("students");--%>
+    <%--for (Student student : resultSet) {--%>
+    <%--out.print("<tr>" + "<td>"+student.getId()+"</td>" + "<td>"+student.getName()+"</td>" +"<td>"+student.getGender()+"</td>" +"<td>"+student.getDob()+"</td>" + "<td><a href='student?action=queryById&id="+student.getId()+"'>编辑</a></td>"+"<td><a href='student?action=remove&id="+student.getId()+"'>删除</a></td>"+"</tr>");--%>
+    <%--}--%>
+    <%--%>--%>
 
     <c:forEach var="student" items="${sessionScope.students}" varStatus="vs" >
         <%--step  步长  默认值是1 begin 起始于第几条 ，默认是0--%>
@@ -76,7 +78,7 @@ if后面的test是必选项
         <%--forEach自动会对students进行迭代，把每次迭代出来的一个student对象赋值给var，--%>
         <%--然后可以通过var里的student取出所有内容--%>
         <tr>
-            <td>${vs.count}</td>
+            <td><input type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
             <td>${student.name}</td>
             <td>${student.gender}</td>
             <td>${student.dob}</td>
@@ -84,10 +86,9 @@ if后面的test是必选项
             <td><a href="student?action=remove&id=${student.id}">删除</a></td>
         </tr>
     </c:forEach>
-
-
 </table>
-    <input type="submit" value="删除">
+        <input type="submit" value="删除">
+    </form>
 
 ${requestScope.message}
 
