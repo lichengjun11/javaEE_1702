@@ -1,6 +1,8 @@
 package demo.json;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -36,35 +38,26 @@ public class JSONTest {
         System.out.println(jsonArray.toString(4));
 
 
-        System.out.println("\n---jackson---\n");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT,true);
+        System.out.println("\n---fastjson---\n");
 
-        try {
         // java object to json object
-            jsonObjectString = objectMapper.writeValueAsString(user);
-            System.out.println(jsonObjectString);
+        jsonObjectString = JSON.toJSONString(user);
+        System.out.println(jsonObjectString);
 
-            // java collection to json array
-            jsonArrayString = objectMapper.writeValueAsString(users);
-            System.out.println(jsonArrayString);
+        // java collection to json array
+        jsonArrayString = JSON.toJSONString(users, true);
+        System.out.println(jsonArrayString);
 
-            // json object to java object
-            System.out.println(objectMapper.readValue(jsonArrayString,User.class));
+        // json object to java object
+        System.out.println(JSON.parseObject(jsonObjectString, User.class));
 
-            // json array to java collection
-            System.out.println((char[]) objectMapper.readValue(jsonArrayString, TypeFactory.defaultInstance().constructCollectionType(List.class, User.class))); // method 1
-            System.out.println(objectMapper.readValue(jsonArrayString, new TypeReference<List<User>>() {
-            })); // method 2
+        // json array to java collection
+        System.out.println(JSON.parseArray(jsonArrayString, User.class));
 
 
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
     }
 }
